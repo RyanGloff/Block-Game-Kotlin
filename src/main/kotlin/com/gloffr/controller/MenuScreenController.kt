@@ -29,6 +29,13 @@ class MenuScreenController(private val model: Model) : MouseListener, KeyListene
         if (pageForwardBtn.contains(e.x, e.y)) {
             menuScreen.pageForward()
         }
+        val levelSelectBtns = model.menuScreen.levelRenderInfo
+        val currentPage = model.menuScreen.currentPage
+        levelSelectBtns.forEachIndexed { index, level -> 
+            if (level.page == currentPage && level.contains(e.x, e.y)) {
+                println("Level selected: $index")
+            }
+        }
     }
     override fun mouseReleased (e: MouseEvent) {
 

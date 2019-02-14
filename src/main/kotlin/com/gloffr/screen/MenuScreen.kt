@@ -2,6 +2,7 @@ package com.gloffr.screen
 
 import java.awt.Graphics
 import java.awt.Color
+import java.awt.image.BufferedImage
 
 import com.gloffr.config.Config
 import com.gloffr.config.MenuScreenSettings
@@ -21,6 +22,7 @@ class MenuScreen(model: Model) : Screen(model) {
     val pageForwardBtnInfo: ObjectRenderInfo
 
     val buttonSS: SpriteSheet
+    val levelSelectImg: SpriteSheet
 
     init {
         // Config refs
@@ -30,6 +32,7 @@ class MenuScreen(model: Model) : Screen(model) {
         val navBtnSize = model.config.menuScreenSettings.navBtnSize
         val navToSelectorMargin = model.config.menuScreenSettings.navToSelectorMargin
         
+        // Calculating layout constants
         val selectorWidth = model.config.width - (navToSelectorMargin + navBtnSize) * 2
         val selectorHeight = model.config.height
         val rows = (selectorHeight - minMargin) / (blockSize + interblockMargin)
@@ -51,7 +54,8 @@ class MenuScreen(model: Model) : Screen(model) {
         pageBackBtnInfo = ObjectRenderInfo(horizontalMargin, (model.config.height - navBtnSize) / 2, navBtnSize)
         pageForwardBtnInfo = ObjectRenderInfo(model.config.width - horizontalMargin - navBtnSize, (model.config.height - navBtnSize) / 2, navBtnSize)
 
-        buttonSS = SpriteSheet("src/main/resources/MenuScreenButtons.jpg", 2, 1)
+        buttonSS = SpriteSheet("src/main/resources/MenuScreenButtons.png", 2, 1)
+        levelSelectImg = SpriteSheet("src/main/resources/LevelIcons.png", 2, 1)
     }
 
     override fun draw (g: Graphics) {
@@ -60,8 +64,9 @@ class MenuScreen(model: Model) : Screen(model) {
 
         g.color = Color.GREEN
         levelRenderInfo.forEach{ info ->
-            if (info.page == currentPage)
-                g.fillRect(info.left, info.top, info.size, info.size)
+            if (info.page == currentPage) {
+                g.drawImage(levelSelectImg.getSprite(1, 0), info.left, info.top, info.size, info.size, null)
+            }
         }
 
         g.drawImage(buttonSS.getSprite(0, 0), pageBackBtnInfo.left, pageBackBtnInfo.top, pageBackBtnInfo.size, pageBackBtnInfo.size, null)

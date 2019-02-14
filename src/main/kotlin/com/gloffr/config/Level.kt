@@ -2,8 +2,8 @@ package com.gloffr.config
 
 class Level {
 
-    val name: String = "Untitled"
     val tiles: List<List<Int>> = emptyList()
+    var locked: Boolean = true
 
     fun getWidth () : Int {
         return tiles[0].size
