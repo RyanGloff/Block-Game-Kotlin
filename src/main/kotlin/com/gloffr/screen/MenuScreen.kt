@@ -65,7 +65,7 @@ class MenuScreen(model: Model) : Screen(model) {
         g.color = Color.GREEN
         levelRenderInfo.forEach{ info ->
             if (info.page == currentPage) {
-                g.drawImage(levelSelectImg.getSprite(1, 0), info.left, info.top, info.size, info.size, null)
+                g.drawImage(levelSelectImg.getSprite(if (info.level.complete) { 1 } else { 0 }, 0), info.left, info.top, info.size, info.size, null)
             }
         }
 

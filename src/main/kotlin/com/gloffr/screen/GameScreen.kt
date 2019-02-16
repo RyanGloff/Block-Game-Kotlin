@@ -6,6 +6,9 @@ import java.awt.Color
 import com.gloffr.Model
 import com.gloffr.config.Level
 import com.gloffr.graphics.SpriteSheet
+import com.gloffr.ObjectRenderInfo
+import com.gloffr.BlockRenderInfo
+import com.gloffr.Block
 
 class GameScreen(model: Model) : Screen(model) {
 
@@ -16,9 +19,18 @@ class GameScreen(model: Model) : Screen(model) {
     var y: Int = 0
     var width: Int = 0
     var height: Int = 0
+    var cols: Int = 0
+    var rows: Int = 0
+    val blockRenderLocs: MutableList<BlockRenderInfo> = mutableListOf<BlockRenderInfo>()
+    val backBtn = ObjectRenderInfo(25, 25, 50)
+    val navBtnSS: SpriteSheet
+    var playerX: Int = 0
+    var playerY: Int = 0
+    val blocks: MutableList<MutableList<Block>> = mutableListOf<MutableList<Block>>()
 
     init {
         blockSS = SpriteSheet("src/main/resources/BlocksSheet.png", 5, 1)
+        navBtnSS = SpriteSheet("src/main/resources/MenuScreenButtons.png", 2, 1)
         tileSize = model.config.gameScreenSettings.tileSize
     }
 
@@ -27,25 +39,97 @@ class GameScreen(model: Model) : Screen(model) {
         g.fillRect(0, 0, model.config.width, model.config.height)
 
         drawBlocks(g)
+
+        drawPlayer(g)
+
+        // Back button
+        g.drawImage(navBtnSS.getSprite(0, 0), backBtn.left, backBtn.top, backBtn.size, backBtn.size, null)
     }
 
     fun loadLevel (level: Level) {
         currentLevel = level
-        val rows = level.tiles.size
-        val cols = level.tiles[0].size
+        rows = level.tiles.size
+        cols = level.tiles[0].size
         height = (cols + rows + 1) * tileSize / 3
         width = (cols + rows) * tileSize / 2
         x = (model.config.width - width) / 2
         y = (model.config.height - height) / 2
+
+        blockRenderLocs.clear()
+        blocks.clear()
+        level.tiles.forEachIndexed { rIndex, row ->
+            blocks.add(mutableListOf<Block>()) 
+            row.forEachIndexed { cIndex, tile ->
+                blocks[rIndex].add(Block(tile))  
+                if (tile != 0) {
+                    blockRenderLocs.add(BlockRenderInfo(blocks[rIndex][cIndex], x + (cIndex * tileSize - rIndex * tileSize + (level.tiles.size - 1) * tileSize) / 2, y + (cIndex + rIndex) * tileSize / 3, tileSize))
+                }
+            }
+        }
+        level.specialized.forEach{ specialized ->
+            val type = specialized.type
+            if (type == "teleport") {
+                val x1 = specialized.meta.get("x1")!!
+                val y1 = specialized.meta.get("y1")!!
+                val x2 = specialized.meta.get("x2")!!
+                val y2 = specialized.meta.get("y2")!!
+                blocks[y1][x1].teleport = true
+                blocks[y1][x1].teleportToX = x2
+                blocks[y1][x1].teleportToY = y2
+            }
+            
+        }
+
+        playerX = level.startX
+        playerY = level.startY
+        blocks[playerY][playerX].activated = true
+    }
+
+    fun movePlayerUp () = movePlayerTo(playerX, playerY - 1)
+    fun movePlayerDown () = movePlayerTo(playerX, playerY + 1)
+    fun movePlayerLeft () = movePlayerTo(playerX - 1, playerY)
+    fun movePlayerRight () = movePlayerTo(playerX + 1, playerY)
+
+    private fun movePlayerTo(x: Int, y: Int) {
+        val tiles = currentLevel?.tiles!!
+        if (x < tiles[0].size && x >= 0 && y < tiles.size && y >= 0 && tiles[y][x] != 0) {
+            playerX = x
+            playerY = y
+            blocks[playerY][playerX].activated = !blocks[playerY][playerX].activated
+            if (isFinished()) {
+                model.setLevelComplete(currentLevel!!)
+                model.switchToMenu()
+            } else if (blocks[playerY][playerX].teleport) {
+                val block = blocks[playerY][playerX]
+                movePlayerTo(block.teleportToX, block.teleportToY)
+            }
+        }
+    }
+
+    private fun isFinished () : Boolean {
+        return blocks.all{ 
+            it.all{
+                it.activated || it.value == 0
+            }
+        }
     }
 
     private fun drawBlocks(g: Graphics) {
-        currentLevel?.tiles!!.forEachIndexed { rIndex, row -> 
+        blockRenderLocs.forEach { block -> 
+            g.drawImage(blockSS.getSprite(block.block.value, 0), block.left, block.top, block.size, block.size, null)
+        }
+        blocks.forEachIndexed { rIndex, row -> 
             row.forEachIndexed { cIndex, tile -> 
-                if (tile != 0)
-                    g.drawImage(blockSS.getSprite(tile - 1, 0), x + (cIndex * tileSize - rIndex * tileSize + (currentLevel?.tiles!!.size - 1) * tileSize) / 2, y + (cIndex + rIndex) * tileSize / 3, tileSize, tileSize, null)
+                if (tile.value != 0) {
+                    g.drawImage(blockSS.getSprite(tile.value - 1 + if (tile.activated) { 1 } else { 0 }, 0), x + (cIndex * tileSize - rIndex * tileSize + (blocks.size - 1) * tileSize) / 2, y + (cIndex + rIndex) * tileSize / 3, tileSize, tileSize, null)
+                }
             }
         }
+    }
+
+    private fun drawPlayer(g: Graphics) {
+        g.color = Color.RED
+        g.drawImage(blockSS.getSprite(3, 0), x + (playerX * tileSize - playerY * tileSize + (rows - 1) * tileSize) / 2, y + (playerX + playerY) * tileSize / 3 - tileSize / 3, tileSize, tileSize, null)
     }
 
 }

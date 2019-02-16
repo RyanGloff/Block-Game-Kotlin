@@ -8,15 +8,19 @@ import java.awt.event.MouseEvent
 import com.gloffr.config.Config
 import com.gloffr.Model
 import com.gloffr.screen.MenuScreen
+import com.gloffr.screen.GameScreen
 
 class Controller(private val model: Model) : KeyListener, MouseListener {
 
     // Sub-controllers
     private val menuScreenController = MenuScreenController(model)
+    private val gameScreenController = GameScreenController(model)
 
     // Key Events
     override fun keyPressed (e: KeyEvent) {
-
+        if (model.activeScreen is GameScreen) {
+            gameScreenController.keyPressed(e)
+        }
     }
     override fun keyReleased (e: KeyEvent) {
 
@@ -27,8 +31,11 @@ class Controller(private val model: Model) : KeyListener, MouseListener {
 
     // Mouse Events
     override fun mousePressed (e: MouseEvent) {
-        if (model.activeScreen is MenuScreen)
-        menuScreenController.mousePressed(e)
+        if (model.activeScreen is MenuScreen) {
+            menuScreenController.mousePressed(e)
+        } else if (model.activeScreen is GameScreen) {
+            gameScreenController.mousePressed(e)
+        }
     }
     override fun mouseReleased (e: MouseEvent) {
 
