@@ -31,9 +31,9 @@ class MenuScreenController(private val model: Model) : MouseListener, KeyListene
         }
         val levelSelectBtns = model.menuScreen.levelRenderInfo
         val currentPage = model.menuScreen.currentPage
-        levelSelectBtns.forEachIndexed { index, level -> 
+        levelSelectBtns.forEach { level ->
             if (level.page == currentPage && level.contains(e.x, e.y)) {
-                println("Level selected: $index")
+                model.startGame(level.level)
             }
         }
     }

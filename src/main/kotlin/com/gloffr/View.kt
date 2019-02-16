@@ -5,6 +5,8 @@ import java.awt.Canvas
 import java.lang.Thread
 import java.awt.Color
 import java.awt.Dimension
+import java.awt.RenderingHints
+import java.awt.Graphics2D
 
 import com.gloffr.config.Config
 import com.gloffr.controller.Controller
@@ -23,7 +25,7 @@ class View(val model: Model, val controller: Controller) {
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.add(canvas)
         frame.pack()
-        //frame.isResizable = false
+        frame.isResizable = false
         frame.setLocationRelativeTo(null)
         frame.isVisible = true
 
