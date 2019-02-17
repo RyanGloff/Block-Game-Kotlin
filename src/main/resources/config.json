@@ -2,12 +2,13 @@
     "width": 800,
     "height": 500,
     "initScreen": "MenuScreen",
+    "saveLocation": "src/main/resources/save.txt",
     "levels": [
         {
             "tiles": [
                 [ 1, 1, 1, 1, 1, 1, 1, 1 ]
             ],
-            "locked": false,
+            "status": "AVAILABLE",
             "startX": 0,
             "startY": 0
         },

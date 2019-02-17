@@ -3,6 +3,8 @@ package com.gloffr.screen
 import java.awt.Graphics
 import java.awt.Color
 import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+import java.io.File
 
 import com.gloffr.config.Config
 import com.gloffr.config.MenuScreenSettings
@@ -11,6 +13,7 @@ import com.gloffr.graphics.SpriteSheet
 import com.gloffr.Model
 import com.gloffr.LevelMenuRenderInfo
 import com.gloffr.ObjectRenderInfo
+import com.gloffr.LevelStatus
 
 class MenuScreen(model: Model) : Screen(model) {
 
@@ -20,9 +23,11 @@ class MenuScreen(model: Model) : Screen(model) {
 
     val pageBackBtnInfo: ObjectRenderInfo
     val pageForwardBtnInfo: ObjectRenderInfo
+    val resetBtnInfo: ObjectRenderInfo
 
     val buttonSS: SpriteSheet
     val levelSelectImg: SpriteSheet
+    val resetBtnImg: BufferedImage
 
     init {
         // Config refs
@@ -53,9 +58,11 @@ class MenuScreen(model: Model) : Screen(model) {
 
         pageBackBtnInfo = ObjectRenderInfo(horizontalMargin, (model.config.height - navBtnSize) / 2, navBtnSize)
         pageForwardBtnInfo = ObjectRenderInfo(model.config.width - horizontalMargin - navBtnSize, (model.config.height - navBtnSize) / 2, navBtnSize)
+        resetBtnInfo = ObjectRenderInfo(model.config.width - 60, model.config.height - 60, 50)
 
         buttonSS = SpriteSheet("src/main/resources/MenuScreenButtons.png", 2, 1)
         levelSelectImg = SpriteSheet("src/main/resources/LevelIcons.png", 2, 1)
+        resetBtnImg = ImageIO.read(File("src/main/resources/resetBtn.png"))
     }
 
     override fun draw (g: Graphics) {
@@ -65,12 +72,21 @@ class MenuScreen(model: Model) : Screen(model) {
         g.color = Color.GREEN
         levelRenderInfo.forEach{ info ->
             if (info.page == currentPage) {
-                g.drawImage(levelSelectImg.getSprite(if (info.level.complete) { 1 } else { 0 }, 0), info.left, info.top, info.size, info.size, null)
+                var sprite: BufferedImage? = null
+                if (info.level.status == LevelStatus.AVAILABLE) {
+                    sprite = levelSelectImg.getSprite(1, 0)
+                } else if (info.level.status == LevelStatus.LOCKED) {
+                    sprite = levelSelectImg.getSprite(0, 0)
+                } else if (info.level.status == LevelStatus.COMPLETE) {
+                    sprite = levelSelectImg.getSprite(1, 0)
+                }
+                g.drawImage(sprite!!, info.left, info.top, info.size, info.size, null)
             }
         }
 
         g.drawImage(buttonSS.getSprite(0, 0), pageBackBtnInfo.left, pageBackBtnInfo.top, pageBackBtnInfo.size, pageBackBtnInfo.size, null)
         g.drawImage(buttonSS.getSprite(1, 0), pageForwardBtnInfo.left, pageForwardBtnInfo.top, pageForwardBtnInfo.size, pageForwardBtnInfo.size, null)
+        g.drawImage(resetBtnImg, resetBtnInfo.left, resetBtnInfo.top, resetBtnInfo.size, resetBtnInfo.size, null)
     }
 
     fun pageBack () {

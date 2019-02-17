@@ -7,4 +7,5 @@ class Config {
     val menuScreenSettings: MenuScreenSettings = MenuScreenSettings()
     val gameScreenSettings: GameScreenSettings = GameScreenSettings()
     val levels: List<Level> = emptyList()
+    val saveLocation: String = ""
 }

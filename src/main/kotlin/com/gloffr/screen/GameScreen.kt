@@ -116,14 +116,7 @@ class GameScreen(model: Model) : Screen(model) {
 
     private fun drawBlocks(g: Graphics) {
         blockRenderLocs.forEach { block -> 
-            g.drawImage(blockSS.getSprite(block.block.value, 0), block.left, block.top, block.size, block.size, null)
-        }
-        blocks.forEachIndexed { rIndex, row -> 
-            row.forEachIndexed { cIndex, tile -> 
-                if (tile.value != 0) {
-                    g.drawImage(blockSS.getSprite(tile.value - 1 + if (tile.activated) { 1 } else { 0 }, 0), x + (cIndex * tileSize - rIndex * tileSize + (blocks.size - 1) * tileSize) / 2, y + (cIndex + rIndex) * tileSize / 3, tileSize, tileSize, null)
-                }
-            }
+            g.drawImage(blockSS.getSprite(block.block.value - 1 + if (block.block.activated) { 1 } else { 0 }, 0), block.left, block.top, block.size, block.size, null)
         }
     }
 

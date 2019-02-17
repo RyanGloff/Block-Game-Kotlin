@@ -6,6 +6,7 @@ import java.awt.event.KeyListener
 import java.awt.event.KeyEvent
 
 import com.gloffr.Model
+import com.gloffr.LevelStatus
 
 class MenuScreenController(private val model: Model) : MouseListener, KeyListener {
 
@@ -23,16 +24,21 @@ class MenuScreenController(private val model: Model) : MouseListener, KeyListene
         val menuScreen = model.menuScreen
         val pageBackBtn = menuScreen.pageBackBtnInfo
         val pageForwardBtn = menuScreen.pageForwardBtnInfo
+        val resetBtn = menuScreen.resetBtnInfo
         if (pageBackBtn.contains(e.x, e.y)) {
             menuScreen.pageBack()
         }
         if (pageForwardBtn.contains(e.x, e.y)) {
             menuScreen.pageForward()
         }
+        if (resetBtn.contains(e.x, e.y)) {
+            model.resetLevels()
+        }
         val levelSelectBtns = model.menuScreen.levelRenderInfo
         val currentPage = model.menuScreen.currentPage
         levelSelectBtns.forEach { level ->
             if (level.page == currentPage && level.contains(e.x, e.y)) {
+                if (level.level.status != LevelStatus.LOCKED)
                 model.startGame(level.level)
             }
         }
