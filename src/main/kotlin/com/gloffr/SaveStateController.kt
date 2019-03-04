@@ -21,7 +21,6 @@ class SaveStateController(private val model: Model) {
         var levelIndex = 0
         while (scanner.hasNextLine()) {
             val line = scanner.nextLine()
-            println("line: $line")
             if (line == "COMPLETE") {
                 model.config.levels[levelIndex++].status = LevelStatus.COMPLETE
             } else if (line == "AVAILABLE") {
@@ -31,9 +30,6 @@ class SaveStateController(private val model: Model) {
             } else {
                 println("Value invalid $line")
             }
-        }
-        model.config.levels.forEach{ 
-            println("${it.status}")
         }
         scanner.close()
     }

@@ -26,12 +26,15 @@ class GameScreen(model: Model) : Screen(model) {
     val navBtnSS: SpriteSheet
     var playerX: Int = 0
     var playerY: Int = 0
+    var playerRenderInfo: ObjectRenderInfo
     val blocks: MutableList<MutableList<Block>> = mutableListOf<MutableList<Block>>()
 
     init {
         blockSS = SpriteSheet("src/main/resources/BlocksSheet.png", 5, 1)
         navBtnSS = SpriteSheet("src/main/resources/MenuScreenButtons.png", 2, 1)
         tileSize = model.config.gameScreenSettings.tileSize
+
+        playerRenderInfo = ObjectRenderInfo(0, 0, tileSize);
     }
 
     override fun draw (g: Graphics) {
@@ -79,10 +82,15 @@ class GameScreen(model: Model) : Screen(model) {
             }
             
         }
-
-        playerX = level.startX
-        playerY = level.startY
+        updatePlayerLocation(level.startX, level.startY)
         blocks[playerY][playerX].activated = true
+    }
+
+    private fun updatePlayerLocation (newX: Int, newY: Int) {
+        playerX = newX
+        playerY = newY
+        playerRenderInfo.left = this.x + (playerX * tileSize - playerY * tileSize + (rows - 1) * tileSize) / 2
+        playerRenderInfo.top = this.y + (playerX + playerY) * tileSize / 3 - tileSize / 3
     }
 
     fun movePlayerUp () = movePlayerTo(playerX, playerY - 1)
@@ -93,8 +101,7 @@ class GameScreen(model: Model) : Screen(model) {
     private fun movePlayerTo(x: Int, y: Int) {
         val tiles = currentLevel?.tiles!!
         if (x < tiles[0].size && x >= 0 && y < tiles.size && y >= 0 && tiles[y][x] != 0) {
-            playerX = x
-            playerY = y
+            updatePlayerLocation(x, y)
             blocks[playerY][playerX].activated = !blocks[playerY][playerX].activated
             if (isFinished()) {
                 model.setLevelComplete(currentLevel!!)
@@ -104,6 +111,10 @@ class GameScreen(model: Model) : Screen(model) {
                 movePlayerTo(block.teleportToX, block.teleportToY)
             }
         }
+    }
+
+    private fun animateMovePlayerTo(x: Int, y: Int) {
+        
     }
 
     private fun isFinished () : Boolean {
@@ -122,7 +133,7 @@ class GameScreen(model: Model) : Screen(model) {
 
     private fun drawPlayer(g: Graphics) {
         g.color = Color.RED
-        g.drawImage(blockSS.getSprite(3, 0), x + (playerX * tileSize - playerY * tileSize + (rows - 1) * tileSize) / 2, y + (playerX + playerY) * tileSize / 3 - tileSize / 3, tileSize, tileSize, null)
+        g.drawImage(blockSS.getSprite(3, 0), playerRenderInfo.left, playerRenderInfo.top, playerRenderInfo.size, playerRenderInfo.size, null)
     }
 
 }
