@@ -9,8 +9,8 @@ import com.gloffr.screen.GameScreen
 class Model(val config: Config) {
 
     val menuScreen = MenuScreen(this)
-    val gameScreen = GameScreen(this)
     val gameModel = GameModel(this)
+    val gameScreen = GameScreen(this)
 
     var activeScreen: Screen
     val stateSaver: SaveStateController

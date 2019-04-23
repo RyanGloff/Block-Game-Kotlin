@@ -9,9 +9,11 @@ import com.gloffr.Model
 
 class GameScreenController(private val model: Model) : MouseListener, KeyListener {
 
+    val gameHudController = GameHudController(model.gameModel.gameHudModel)
+
     // MouseListener
     override fun mousePressed (e: MouseEvent) {
-        
+        gameHudController.mousePressed(e)
     }
     override fun mouseReleased (e: MouseEvent) {
 

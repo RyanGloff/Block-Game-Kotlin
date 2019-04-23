@@ -11,6 +11,8 @@ class GameModel (private val model: Model) {
 
     var activated: Array<BooleanArray> = Array(0, {BooleanArray(0)})
 
+    val gameHudModel = GameHudModel(model)
+
     fun loadLevel (level: Level) {
         activated = Array(level.tiles.size, {BooleanArray(level.tiles.get(0).size)})
         currentLevel = level

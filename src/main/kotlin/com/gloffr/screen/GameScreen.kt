@@ -3,6 +3,7 @@ package com.gloffr.screen
 import com.gloffr.Model
 import com.gloffr.config.Level
 import com.gloffr.TileDrawer
+import com.gloffr.GameHud
 
 import java.awt.Graphics
 import java.awt.Color
@@ -15,10 +16,12 @@ class GameScreen (model: Model) : Screen (model) {
 
     val tileDrawer: TileDrawer
     val playerImage: BufferedImage
+    val gameHud: GameHud
 
     init {
         tileDrawer = TileDrawer(model)
         playerImage = ImageIO.read(File("src/main/resources/Block.png"))
+        gameHud = GameHud(model.gameModel.gameHudModel)
     }
 
     override fun draw (g: Graphics) {
@@ -35,6 +38,8 @@ class GameScreen (model: Model) : Screen (model) {
             model.config.gameScreenSettings.tileSize,
             null
         )
+
+        gameHud.render(g)
     }
 
 }
