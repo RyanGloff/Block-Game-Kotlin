@@ -1,6 +1,7 @@
 package com.gloffr.config
 
 import com.gloffr.LevelStatus
+import com.gloffr.GameModel
 
 class Level {
 
@@ -16,6 +17,30 @@ class Level {
 
     fun getHeight () : Int {
         return tiles.size
+    }
+
+    fun locationExists (x: Int, y: Int) : Boolean {
+        if (y < 0 || y >= tiles.size || x < 0 || x >= tiles.get(y).size) {
+            return false
+        }
+        return tiles.get(y).get(x) != 0
+    }
+
+    fun postProcessMove(gameModel: GameModel) {
+        gameModel.activated[gameModel.playerY][gameModel.playerX] = !gameModel.activated[gameModel.playerY][gameModel.playerX]
+        specialized.forEach { spec ->
+            val meta = spec.meta
+            if (spec.type == "teleport") {
+                if (gameModel.playerX == meta.get("x1") && gameModel.playerY == meta.get("y1")) {
+                    gameModel.playerX = meta.get("x2")!!
+                    gameModel.playerY = meta.get("y2")!!
+                    gameModel.activated[gameModel.playerY][gameModel.playerX] = !gameModel.activated[gameModel.playerY][gameModel.playerX]
+                }
+            }
+        }
+        if (gameModel.levelComplete()) {
+            gameModel.finishLevel()
+        }
     }
 
 }

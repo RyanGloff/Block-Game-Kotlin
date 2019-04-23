@@ -10,6 +10,7 @@ class Model(val config: Config) {
 
     val menuScreen = MenuScreen(this)
     val gameScreen = GameScreen(this)
+    val gameModel = GameModel(this)
 
     var activeScreen: Screen
     val stateSaver: SaveStateController
@@ -35,11 +36,11 @@ class Model(val config: Config) {
 
     fun startGame (level: Level) {
         activeScreen = gameScreen
-        gameScreen.loadLevel(level)
+        gameModel.loadLevel(level)
     }
 
     fun resumeGame () {
-        if (gameScreen.currentLevel == null) return
+        if (gameModel.currentLevel == null) return
         activeScreen = gameScreen
     }
 

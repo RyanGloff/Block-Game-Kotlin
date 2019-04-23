@@ -11,9 +11,7 @@ class GameScreenController(private val model: Model) : MouseListener, KeyListene
 
     // MouseListener
     override fun mousePressed (e: MouseEvent) {
-        if (model.gameScreen.backBtn.contains(e.x, e.y)) {
-            model.switchToMenu()
-        }
+        
     }
     override fun mouseReleased (e: MouseEvent) {
 
@@ -30,14 +28,19 @@ class GameScreenController(private val model: Model) : MouseListener, KeyListene
 
     // Key Listener
     override fun keyPressed (e: KeyEvent) {
-        if (e.keyCode == KeyEvent.VK_W) {
-            model.gameScreen.movePlayerUp()
-        } else if (e.keyCode == KeyEvent.VK_S) {
-            model.gameScreen.movePlayerDown()
-        } else if (e.keyCode == KeyEvent.VK_A) {
-            model.gameScreen.movePlayerLeft()
-        } else if (e.keyCode == KeyEvent.VK_D) {
-            model.gameScreen.movePlayerRight()
+        val level = model.gameModel.currentLevel
+        val gm = model.gameModel
+        if (level == null) {
+            return
+        }
+        if (e.keyCode == KeyEvent.VK_W && level.locationExists(gm.playerX, gm.playerY - 1)) {
+            model.gameModel.movePlayer(0, -1)
+        } else if (e.keyCode == KeyEvent.VK_S && level.locationExists(gm.playerX, gm.playerY + 1)) {
+            model.gameModel.movePlayer(0, 1)
+        } else if (e.keyCode == KeyEvent.VK_A && level.locationExists(gm.playerX - 1, gm.playerY)) {
+            model.gameModel.movePlayer(-1, 0)
+        } else if (e.keyCode == KeyEvent.VK_D && level.locationExists(gm.playerX + 1, gm.playerY)) {
+            model.gameModel.movePlayer(1, 0)
         }
     }
     override fun keyReleased (e: KeyEvent) {
