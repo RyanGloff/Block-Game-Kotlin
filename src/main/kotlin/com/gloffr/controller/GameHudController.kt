@@ -5,7 +5,7 @@ import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.KeyEvent
 
-import com.gloffr.GameHudModel
+import com.gloffr.model.GameHudModel
 
 class GameHudController (private val model: GameHudModel) : MouseListener, KeyListener {
 

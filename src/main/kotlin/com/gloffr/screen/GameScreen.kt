@@ -1,9 +1,7 @@
 package com.gloffr.screen
 
-import com.gloffr.Model
+import com.gloffr.model.Model
 import com.gloffr.config.Level
-import com.gloffr.TileDrawer
-import com.gloffr.GameHud
 
 import java.awt.Graphics
 import java.awt.Color

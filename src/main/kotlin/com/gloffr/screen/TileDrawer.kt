@@ -1,9 +1,11 @@
-package com.gloffr
+package com.gloffr.screen
 
 import java.awt.Graphics
 import java.awt.Color
 import javax.imageio.ImageIO
 import java.io.File
+
+import com.gloffr.model.Model
 
 class TileDrawer (var model: Model) {
 
@@ -13,8 +15,6 @@ class TileDrawer (var model: Model) {
     val teleportImg = ImageIO.read(File("src/main/resources/BlockTeleport.png"))
 
     fun draw (g: Graphics) {
-        g.color = Color.BLUE
-        g.drawRect(0, 0, getWidth(), getHeight())
         val level = model.gameModel.currentLevel
         if (level == null) return
         level.tiles.forEachIndexed { row, tileList ->

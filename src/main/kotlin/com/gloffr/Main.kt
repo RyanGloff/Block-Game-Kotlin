@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 import com.gloffr.config.Config
 import com.gloffr.controller.Controller
+import com.gloffr.model.Model
+import com.gloffr.screen.View
 
 fun main (args: Array<String>) {
     if (args.size != 1) {

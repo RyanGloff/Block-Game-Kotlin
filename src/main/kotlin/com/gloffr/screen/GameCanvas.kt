@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.screen
 
 import java.awt.Canvas
 import java.awt.Dimension

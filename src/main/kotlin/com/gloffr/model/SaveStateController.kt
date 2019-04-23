@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.model
 
 import java.io.File
 import java.io.PrintStream

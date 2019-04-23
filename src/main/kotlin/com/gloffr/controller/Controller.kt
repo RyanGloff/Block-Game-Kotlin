@@ -6,7 +6,7 @@ import java.awt.event.MouseListener
 import java.awt.event.MouseEvent
 
 import com.gloffr.config.Config
-import com.gloffr.Model
+import com.gloffr.model.Model
 import com.gloffr.screen.MenuScreen
 import com.gloffr.screen.GameScreen
 

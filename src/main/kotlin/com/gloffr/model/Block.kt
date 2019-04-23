@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.model
 
 class Block (val value: Int) {
     var activated = false

@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent
 import java.awt.event.KeyListener
 import java.awt.event.KeyEvent
 
-import com.gloffr.Model
+import com.gloffr.model.Model
 
 class GameScreenController(private val model: Model) : MouseListener, KeyListener {
 

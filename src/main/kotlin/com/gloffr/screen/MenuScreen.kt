@@ -10,10 +10,10 @@ import com.gloffr.config.Config
 import com.gloffr.config.MenuScreenSettings
 import com.gloffr.config.Level
 import com.gloffr.graphics.SpriteSheet
-import com.gloffr.Model
-import com.gloffr.LevelMenuRenderInfo
-import com.gloffr.ObjectRenderInfo
-import com.gloffr.LevelStatus
+import com.gloffr.model.Model
+import com.gloffr.model.LevelMenuRenderInfo
+import com.gloffr.model.ObjectRenderInfo
+import com.gloffr.model.LevelStatus
 
 class MenuScreen(model: Model) : Screen(model) {
 

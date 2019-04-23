@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.model
 
 open class ObjectRenderInfo(var left: Int, var top: Int, val size: Int) {
 

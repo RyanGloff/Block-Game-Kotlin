@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent
 import java.awt.event.KeyListener
 import java.awt.event.KeyEvent
 
-import com.gloffr.Model
-import com.gloffr.LevelStatus
+import com.gloffr.model.Model
+import com.gloffr.model.LevelStatus
 
 class MenuScreenController(private val model: Model) : MouseListener, KeyListener {
 

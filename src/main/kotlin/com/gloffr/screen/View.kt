@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.screen
 
 import javax.swing.JFrame
 import java.awt.Canvas
@@ -10,6 +10,7 @@ import java.awt.Graphics2D
 
 import com.gloffr.config.Config
 import com.gloffr.controller.Controller
+import com.gloffr.model.Model
 
 class View(val model: Model, val controller: Controller) {
 

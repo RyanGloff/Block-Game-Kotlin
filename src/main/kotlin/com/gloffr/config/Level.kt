@@ -1,7 +1,7 @@
 package com.gloffr.config
 
-import com.gloffr.LevelStatus
-import com.gloffr.GameModel
+import com.gloffr.model.LevelStatus
+import com.gloffr.model.GameModel
 
 class Level {
 

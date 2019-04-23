@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.model
 
 import com.gloffr.config.Config
 import com.gloffr.config.Level

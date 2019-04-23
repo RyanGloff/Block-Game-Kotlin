@@ -1,4 +1,4 @@
-package com.gloffr
+package com.gloffr.model
 
 enum class LevelStatus {
 
