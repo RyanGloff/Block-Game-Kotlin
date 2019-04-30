@@ -2,12 +2,13 @@ package com.gloffr.model
 
 import com.gloffr.config.Level
 
-class GameModel (private val model: Model) {
+class GameModel (private val model: Model, private val live: Boolean) {
 
     var currentLevel: Level? = null
 
     var playerX: Int = 0
     var playerY: Int = 0
+    var numMoves: Int = 0
 
     var activated: Array<BooleanArray> = Array(0, {BooleanArray(0)})
 
@@ -18,6 +19,7 @@ class GameModel (private val model: Model) {
         currentLevel = level
         playerX = level.startX
         playerY = level.startY
+        numMoves = 0
         activated[level.startY][level.startX] = true
     }
 
@@ -37,7 +39,7 @@ class GameModel (private val model: Model) {
             model.switchToMenu()
             return
         }
-        model.setLevelComplete(currentLevel!!)
+        model.setLevelComplete(currentLevel!!, numMoves)
         model.switchToMenu()
     }
 
@@ -47,6 +49,12 @@ class GameModel (private val model: Model) {
         playerX += dx
         playerY += dy
         level.postProcessMove(model.gameModel)
+        numMoves++
+    }
+
+    fun resetCurrentLevel () {
+        if (currentLevel == null) return
+        loadLevel(currentLevel!!)
     }
 
 }

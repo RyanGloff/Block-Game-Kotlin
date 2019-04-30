@@ -19,7 +19,7 @@ fun main (args: Array<String>) {
     val objMapper = ObjectMapper()
     val config = objMapper.readValue(configStr, Config::class.java);
 
-    val model = Model(config)
+    val model = Model(config, true)
     val controller = Controller(model)
     View(model, controller)
 }

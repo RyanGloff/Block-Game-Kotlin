@@ -6,10 +6,10 @@ import com.gloffr.screen.Screen
 import com.gloffr.screen.MenuScreen
 import com.gloffr.screen.GameScreen
 
-class Model(val config: Config) {
+class Model(val config: Config, private val live: Boolean) {
 
     val menuScreen = MenuScreen(this)
-    val gameModel = GameModel(this)
+    val gameModel = GameModel(this, live)
     val gameScreen = GameScreen(this)
 
     var activeScreen: Screen
@@ -25,13 +25,18 @@ class Model(val config: Config) {
         stateSaver.readState()
     }
 
-    fun setLevelComplete (level: Level) {
+    fun setLevelComplete (level: Level, score: Int) {
         val index = config.levels.indexOf(level)
         level.status = LevelStatus.COMPLETE
+        if (level.highScore > score) {
+            level.highScore = score
+        }
         if (index != config.levels.size - 1) {
             config.levels[index + 1].status = LevelStatus.AVAILABLE
         }
-        stateSaver.saveState()
+        if (live) {
+            stateSaver.saveState()
+        }
     }
 
     fun startGame (level: Level) {
@@ -56,7 +61,9 @@ class Model(val config: Config) {
                 level.status = LevelStatus.AVAILABLE
             }
         }
-        stateSaver.saveState()
+        if (live) {
+            stateSaver.saveState()
+        }
     }
 
 }

@@ -10,9 +10,10 @@ import com.gloffr.model.GameHudModel
 class GameHudController (private val model: GameHudModel) : MouseListener, KeyListener {
 
     override fun mousePressed (e: MouseEvent) {
-        if (e.getX() > model.backBtn.top && e.getX() < model.backBtn.top + model.backBtn.size &&
-                e.getY() > model.backBtn.left && e.getY() < model.backBtn.left + model.backBtn.size) {
+        if (model.backBtn.contains(e.getX(), e.getY())) {
             model.returnToMenu()
+        } else if (model.resetBtn.contains(e.getX(), e.getY())) {
+            model.resetLevel()
         }
     }
     override fun mouseReleased (e: MouseEvent) {
