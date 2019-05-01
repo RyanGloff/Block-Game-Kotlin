@@ -6,13 +6,16 @@ import javax.imageio.ImageIO
 import java.io.File
 
 import com.gloffr.model.Model
+import com.gloffr.graphics.SpriteSheet
 
 class TileDrawer (var model: Model) {
 
     var tileSize = model.config.gameScreenSettings.tileSize
-    val tileImg = ImageIO.read(File("src/main/resources/Block.png"))
-    val activatedImg = ImageIO.read(File("src/main/resources/BlockActivated.png"))
-    val teleportImg = ImageIO.read(File("src/main/resources/BlockTeleport.png"))
+    var blockSheet = SpriteSheet("src/main/resources/BlocksSheet.png", 5, 1)
+    val tileImg = blockSheet.getSprite(0, 0)
+    val activatedImg = blockSheet.getSprite(1, 0)
+    val teleportImg = blockSheet.getSprite(2, 0)
+    val endTeleportImg = blockSheet.getSprite(3, 0)
 
     fun draw (g: Graphics) {
         val level = model.gameModel.currentLevel
@@ -21,10 +24,13 @@ class TileDrawer (var model: Model) {
             tileList.forEachIndexed { col, tile ->
                 if (level.locationExists(col, row)) {
                     val isTeleport = level.isTeleport(col, row)
+                    val isEndTeleport = level.isEndTeleport(col, row)
                     if (model.gameModel.activated[row][col]) {
                         g.drawImage(activatedImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
                     } else if (isTeleport) {
                         g.drawImage(teleportImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
+                    } else if (isEndTeleport) {
+                        g.drawImage(endTeleportImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
                     } else {
                         g.drawImage(tileImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
                     }
