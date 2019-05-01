@@ -60,6 +60,7 @@ class Model(val config: Config, private val live: Boolean) {
             } else {
                 level.status = LevelStatus.AVAILABLE
             }
+            level.highScore = Int.MAX_VALUE
         }
         if (live) {
             stateSaver.saveState()

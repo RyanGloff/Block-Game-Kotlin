@@ -39,7 +39,7 @@ class GameModel (private val model: Model, private val live: Boolean) {
             model.switchToMenu()
             return
         }
-        model.setLevelComplete(currentLevel!!, numMoves)
+        model.setLevelComplete(currentLevel!!, numMoves + 1)
         model.switchToMenu()
     }
 
