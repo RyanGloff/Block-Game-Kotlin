@@ -63,7 +63,6 @@ class TileDrawer (var model: Model) {
         if (tiles == null) return 0
         val rows = (tiles.size)
         val cols = (tiles.get(0).size)
-        val tileTopHeight = tileSize * 2 / 3
         return (rows + cols) * tileSize / 3 + 2 * tileSize / 3
     }
 
