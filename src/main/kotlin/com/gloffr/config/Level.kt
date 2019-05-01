@@ -44,4 +44,16 @@ class Level {
         }
     }
 
+    fun isTeleport (x: Int, y: Int) : Boolean {
+        specialized.forEach { spec ->
+            val meta = spec.meta
+            if (spec.type == "teleport") {
+                if (x == meta.get("x1") && y == meta.get("y1")) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 }

@@ -30,4 +30,8 @@ class GameHudModel (private val model: Model) {
         return model.gameModel.currentLevel?.highScore!!
     }
 
+    fun getScore () : Int {
+        return model.gameModel.numMoves
+    }
+
 }

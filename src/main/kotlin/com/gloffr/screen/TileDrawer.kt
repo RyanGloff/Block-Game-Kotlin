@@ -20,8 +20,11 @@ class TileDrawer (var model: Model) {
         level.tiles.forEachIndexed { row, tileList ->
             tileList.forEachIndexed { col, tile ->
                 if (level.locationExists(col, row)) {
+                    val isTeleport = level.isTeleport(col, row)
                     if (model.gameModel.activated[row][col]) {
                         g.drawImage(activatedImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
+                    } else if (isTeleport) {
+                        g.drawImage(teleportImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
                     } else {
                         g.drawImage(tileImg, getRenderLocX(col, row), getRenderLocY(col, row), tileSize, tileSize, null)
                     }
